@@ -44,7 +44,7 @@ student *head;
 head = new student;
 student *temp = head;
 if(创建新节点) {
-    temp -> next = new student; //temp -> next == (*temp).next, 即引用结构体变量的next
+    temp -> next = new student; //temp -> next == (*temp).next, 即引用结构体变量的next, '->'指向运算符
     temp = temp -> next;
     if(创建新节点) {
         ...
