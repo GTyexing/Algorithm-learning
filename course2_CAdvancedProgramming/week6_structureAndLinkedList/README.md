@@ -23,9 +23,9 @@ student student1;
 - 链表尾： 地址部分为NULL
 链表的插入删除操作十分方便
 
-链表的创建
+### 链表的创建
 
-new 和 delete
+- new 和 delete
 ```c++
 int *pint = new int(1024);
 // new => 用于开辟存储空间，并返回空间的起始地址
