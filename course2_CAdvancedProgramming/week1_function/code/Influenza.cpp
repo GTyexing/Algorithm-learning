@@ -31,15 +31,8 @@ int main() {
 				switch (room[j][k])
 				{
 				case '@':
-
-					if (room[j - 1][k] == '.' && j > 0)
-						room[j - 1][k] = '1';
-					if (room[j + 1][k] == '.' && j < n)
-						room[j + 1][k] = '1';
-					if (room[j][k - 1] == '.' && k > 0)
-						room[j][k - 1] = '1';
-					if (room[j][k + 1] == '.' && k < n)
-						room[j][k + 1] = '1';
+					if (room[j - 1][k] == '@' || room[j + 1][k] == '@' || room[j][k - 1] == '@' || room[j][k + 1] == '@')
+						room[j][k] = '1';
 					break;
 				default:
 					break;
