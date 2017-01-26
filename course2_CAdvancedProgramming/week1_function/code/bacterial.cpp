@@ -53,11 +53,11 @@ int main() {
 
 	cout << n - index << endl;
 	for (int i = index; i < n; i++) {
-		cout << array[i] << endl;
+		cout << id[i] << endl;
 	}
 	cout << index << endl;
 	for (int i = 0; i < index; i++) {
-		cout << array[i] << endl;
+		cout << id[i] << endl;
 	}
 	return 0;
 }
