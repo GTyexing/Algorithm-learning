@@ -16,7 +16,7 @@ public:
 Complex & Complex::operator=(string s) {
 	int pos1 = s.find('+', 0);
 	string s1 = s.substr(0, pos1);
-	string s2 = s.substr(pos1 + 1);
+	string s2 = s.substr(pos1 + 1,  s.length()-pos1-2);
 	r = atof(s1.c_str());
 	i = atof(s2.c_str());
 	return *this;
