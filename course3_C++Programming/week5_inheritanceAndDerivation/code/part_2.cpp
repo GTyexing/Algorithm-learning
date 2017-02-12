@@ -2,7 +2,7 @@
 #include <string>
 #include <iomanip>
 using namespace std;
-// 在此处补充你的代码
+
 class Warrior {
 	int number;
 	int health;
@@ -16,7 +16,7 @@ public:
 		this->name = w.name;
 		this->number = w.number;
 	}
-	void printInfo(string color, int time, int life);
+	virtual void printInfo(string color, int time, int life);
 	int printHealth() { return health; }
 	friend class Headquarter;
 };
@@ -37,14 +37,14 @@ void Warrior::printInfo(string color, int time, int life) {
 class dragon : public Warrior {
 public:
 	dragon() {}
-	dragon(string na, int h, int n = 0):Warrior(na, h, n) {}
-	void printInfo(string color, int time, int life);
+	dragon(string na, int h, int n = 0) :Warrior(na, h, n) {}
+	virtual void printInfo(string color, int time, int life);
 };
 
 void dragon::printInfo(string color, int time, int life) {
 	Warrior::printInfo(color, time, life);
 	int h = printHealth();
-	cout << "It has a " << Warrior::WeaponBox[time % 3] 
+	cout << "It has a " << Warrior::WeaponBox[time % 3]
 		<< ",and it's morale is " << setprecision(3) << (double)life / h << endl;
 }
 
@@ -53,7 +53,7 @@ class ninjia : public Warrior {
 public:
 	ninjia() {}
 	ninjia(string na, int h, int n = 0) :Warrior(na, h, n) {}
-	void printInfo(string color, int time, int life);
+	virtual void printInfo(string color, int time, int life);
 };
 
 void ninjia::printInfo(string color, int time, int life) {
@@ -66,7 +66,7 @@ class iceman : public Warrior {
 public:
 	iceman() {}
 	iceman(string na, int h, int n = 0) :Warrior(na, h, n) {}
-	void printInfo(string color, int time, int life);
+	virtual void printInfo(string color, int time, int life);
 };
 
 void iceman::printInfo(string color, int time, int life) {
@@ -78,7 +78,7 @@ class lion : public Warrior {
 public:
 	lion() {};
 	lion(string na, int h, int n = 0) :Warrior(na, h, n) {}
-	void printInfo(string color, int time, int life);
+	virtual void printInfo(string color, int time, int life);
 };
 
 void lion::printInfo(string color, int time, int life) {
@@ -95,23 +95,20 @@ class Headquarter {
 	iceman i;
 	lion l;
 	Warrior w;
+	Warrior ** warrior;
 	int nowno; // 现在正在做第几个
 	int wno; // 当前在做哪一中兵
 	int min; // 所造士兵中血量最低值
 public:
-	Headquarter(string c, int l, int * o, const dragon & d, ninjia n, iceman i, lion lion, Warrior w, int min);
-	int showlife() {return life;}
+	Headquarter(string c, int l, int * o, Warrior **  warrior, int min);
+	int showlife() { return life; }
 	void makeWarrior();
 };
 
-Headquarter::Headquarter(string color, int life, int * order, const dragon & d, ninjia n, iceman i, lion lion, Warrior w, int min) {
+Headquarter::Headquarter(string color, int life, int * order, Warrior ** warrior, int min) {
 	this->color = color;
 	this->life = life;
-	this->d = d;
-	this->n = n;
-	this->i = i;
-	this->l = lion;
-	this->w = w;
+	this->warrior = warrior;
 	this->order = order;
 	nowno = 0;
 	wno = 0;
@@ -126,72 +123,16 @@ void Headquarter::makeWarrior() {
 	}
 	else if (life >= min) {
 		while (true) {
-			bool printed = false;
-			switch (order[wno])
-			{
-			case 1:
-				if(life >= n.printHealth()) {
-					life -= n.printHealth();
-					cout << setw(3) << setfill('0') << nowno << ' ';
-					n.printInfo(color, nowno + 1, life);
-					nowno++;
-					wno++;
-					printed = true;
-					if (wno == 5)
-						wno = 0;
-				}
-				break;
-			case 2:
-				if (life >= i.printHealth()) {
-					life -= i.printHealth();
-					cout << setw(3) << setfill('0') << nowno << ' ';
-					i.printInfo(color, nowno + 1, life);
-					printed = true;
-					nowno++;
-					wno++;
-					if (wno == 5)
-						wno = 0;
-				}
-				break;
-			case 3:
-				if (life >= l.printHealth()) {
-					life -= l.printHealth();
-					cout << setw(3) << setfill('0') << nowno << ' ';
-					l.printInfo(color, nowno + 1, life);
-					printed = true;
-					nowno++;
-					wno++;
-					if (wno == 5)
-						wno = 0;
-				}
-				break;
-			case 4:
-				if (life >= w.printHealth()) {
-					life -= w.printHealth();
-					cout << setw(3) << setfill('0') << nowno << ' ';
-					w.printInfo(color, nowno + 1, life);
-					printed = true;
-					nowno++;
-					wno++;
-					if (wno == 5)
-						wno = 0;
-				}
-				break;
-			case 0:
-				if (life >= d.printHealth()) {
-					life -= d.printHealth();
-					cout << setw(3) << setfill('0') << nowno << ' ';
-					d.printInfo(color, nowno + 1, life);
-					printed = true;
-					nowno++;
-					wno++;
-					if (wno == 5)
-						wno = 0;
-				}
+			if (life >= warrior[order[wno]]->printHealth()) {
+				life -= warrior[order[wno]]->printHealth();
+				cout << setw(3) << setfill('0') << nowno << ' ';
+				warrior[order[wno]]->printInfo(color, nowno + 1, life);
+				nowno++;
+				wno++;
+				if (wno == 5)
+					wno = 0;
 				break;
 			}
-			if (printed == true)
-				break;
 			wno++;
 			if (wno == 5)
 				wno = 0;
@@ -220,9 +161,11 @@ int main() {
 	iceman redI("iceman", s[2]); iceman blueI(redI);
 	lion redL("lion", s[3]); lion blueL(redL);
 	Warrior redW("wolf", s[4]); Warrior blueW(redW);
-	Headquarter red("red", life, r, redD, redN, redI, redL, redW, min);
-	Headquarter blue("blue", life, b, blueD, blueN, blueI, blueL, blueW, min);
-	cout << "Case" << n1 << endl;
+	Warrior * redS[5] = { &redD, &redN, & redI, & redL, & redW};
+	Warrior * blueS[5] = { &blueD, &blueN, &blueI, &blueL, &blueW };
+	Headquarter red("red", life, r, redS, min);
+	Headquarter blue("blue", life, b, blueS, min);
+	cout << "Case " << n1 << endl;
 	while (red.showlife() >= 0 || blue.showlife() >= 0) {
 		red.makeWarrior();
 		blue.makeWarrior();
