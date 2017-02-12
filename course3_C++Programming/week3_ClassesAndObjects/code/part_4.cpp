@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <string>
 #include <iomanip>
@@ -57,7 +56,7 @@ Headquarter::Headquarter(string color, int life, int * order, Warrior * warrior)
 void Headquarter::makeWarrior() {
 	if (life >= 0 && life < min) {
 		cout << setw(3) << setfill('0') << nowno << ' ' << color <<
-			"headquarter stops making warriors" << endl;
+			" headquarter stops making warriors" << endl;
 		life = -1;
 	}
 	else if (life >= min) {
