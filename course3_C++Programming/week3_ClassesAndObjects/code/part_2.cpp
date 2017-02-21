@@ -5,6 +5,7 @@
 10*/
 #include <iostream>
 using namespace std;
+
 class Sample {
 public:
 	int v;

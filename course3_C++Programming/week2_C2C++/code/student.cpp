@@ -24,6 +24,8 @@
 
 各部分内容之间均用单个英文逗号","隔开，无多余空格。*/
 #include <iostream>
+#include <string.h>
+#include <cstdio>
 using namespace std;
 
 class student {
@@ -33,7 +35,7 @@ class student {
 	int score;
 public:
 	void getInfo(char n[], int a, int i, int s) {
-		strcpy_s(name, n);
+		strcpy(name, n);
 		age = a;
 		id = i;
 		score = s;
