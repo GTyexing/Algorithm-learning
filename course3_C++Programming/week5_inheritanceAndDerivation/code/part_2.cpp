@@ -113,9 +113,9 @@
 using namespace std;
 
 class Warrior {
-  int number;
-  int health;
-  string name;
+  int number;//数量
+  int health;//生命值
+  string name;//姓名
 public:
   static string WeaponBox[3];
   Warrior() {}
