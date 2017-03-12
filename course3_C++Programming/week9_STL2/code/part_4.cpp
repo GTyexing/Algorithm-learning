@@ -1,0 +1,1 @@
+/*same as week7---part_4.cpp*/
